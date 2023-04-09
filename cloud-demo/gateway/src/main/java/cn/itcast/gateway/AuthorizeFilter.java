@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 public class AuthorizeFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+//        return chain.filter(exchange);
+
         // 1.获取请求参数
         ServerHttpRequest request = exchange.getRequest();
         MultiValueMap<String, String> params = request.getQueryParams();
