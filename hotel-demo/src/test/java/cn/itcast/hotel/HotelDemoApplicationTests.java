@@ -7,7 +7,6 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SpringBootTest
+// @EsMapperScan("cn.itcast.hotel.mapper")
 class HotelDemoApplicationTests {
 
     private RestHighLevelClient client;
@@ -36,7 +36,7 @@ class HotelDemoApplicationTests {
     public void testCreateHotelIndex() throws IOException {
         CreateIndexRequest request = new CreateIndexRequest("hotel");
 
-        request.source("", XContentType.JSON);
+        request.source(MAPPING_TEMPLATE, XContentType.JSON);
 
         client.indices().create(request, RequestOptions.DEFAULT);
     }
@@ -76,6 +76,32 @@ class HotelDemoApplicationTests {
         client.bulk(request, RequestOptions.DEFAULT);
     }
 
+    /*@Test
+    public void testEasyEsInsert() {
+        Document document = new Document();
+        document.setTitle("老汉");
+        document.setContent("推*技术过硬");
+        int successCount = documentMapper.insert(document);
+        System.out.println(successCount);
+    }
+
+    @Test
+    public void testEasyEsSelect() {
+        String title = "老汉";
+        LambdaEsQueryWrapper<Document> wrapper = new LambdaEsQueryWrapper<>();
+        wrapper.eq(Document::getTitle, title);
+        System.out.println(documentMapper.selectList(wrapper));
+    }
+
+    @Test
+    public void testEasyEsSelect2() {
+        String name = "如家酒店(北京良乡西路店)";
+        LambdaEsQueryWrapper<Hotel> wrapper = new LambdaEsQueryWrapper<>();
+        wrapper.eq(Hotel::getName, name);
+        System.out.println(hotelDocMapper.selectList(wrapper));
+    }*/
+
+
     @BeforeEach
     public void client() {
         this.client = new RestHighLevelClient(RestClient.builder(HttpHost.create("http://124.71.152.110:9200")));
@@ -85,5 +111,55 @@ class HotelDemoApplicationTests {
     public void closeClient() throws IOException {
         this.client.close();
     }
+
+    public static final String MAPPING_TEMPLATE = "{\n" +
+            "  \"mappings\": {\n" +
+            "    \"properties\": {\n" +
+            "      \"id\": {\n" +
+            "        \"type\": \"keyword\"\n" +
+            "      },\n" +
+            "      \"name\": {\n" +
+            "        \"type\": \"text\",\n" +
+            "        \"analyzer\": \"ik_max_word\",\n" +
+            "        \"copy_to\": \"all\"\n" +
+            "      },\n" +
+            "      \"address\": {\n" +
+            "        \"type\": \"keyword\",\n" +
+            "        \"index\": false\n" +
+            "      },\n" +
+            "      \"price\": {\n" +
+            "        \"type\": \"integer\"\n" +
+            "      },\n" +
+            "      \"score\": {\n" +
+            "        \"type\": \"integer\"\n" +
+            "      },\n" +
+            "      \"brand\": {\n" +
+            "        \"type\": \"keyword\",\n" +
+            "        \"copy_to\": \"all\"\n" +
+            "      },\n" +
+            "      \"city\": {\n" +
+            "        \"type\": \"keyword\"\n" +
+            "      },\n" +
+            "      \"starName\": {\n" +
+            "        \"type\": \"keyword\"\n" +
+            "      },\n" +
+            "      \"business\": {\n" +
+            "        \"type\": \"keyword\",\n" +
+            "        \"copy_to\": \"all\"\n" +
+            "      },\n" +
+            "      \"pic\": {\n" +
+            "        \"type\": \"keyword\",\n" +
+            "        \"index\": false\n" +
+            "      },\n" +
+            "      \"location\": {\n" +
+            "        \"type\": \"geo_point\"\n" +
+            "      },\n" +
+            "      \"all\": {\n" +
+            "        \"type\": \"text\",\n" +
+            "        \"analyzer\": \"ik_max_word\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
 
 }

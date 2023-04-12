@@ -1,13 +1,13 @@
 server:
-  port: 8089
+  port: 8099
 spring:
   datasource:
-    url: jdbc:mysql://124.71.152.110:3306/cloud_hotel?useSSL=false
+    url: jdbc:mysql://124.71.152.110:3306/cloud_hotel?useSSL=false&characterEncoding=UTF-8
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
   rabbitmq:
-    addresses: 124.71.152.110
+    host: 124.71.152.110
     port: 5672
     username: guest
     password: guest
@@ -21,6 +21,3 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: cn.itcast.hotel.pojo
-#easy-es:
-#  address: 124.71.152.110:9200
-#  enable: true
