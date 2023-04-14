@@ -6,7 +6,11 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cloud_user?useUnicode=true&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://124.71.152.110:3306/cloud_user?useUnicode=true&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8086
 #  shardingsphere:
 #    sharding:
 #      default-database-strategy:

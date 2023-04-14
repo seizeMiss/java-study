@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@MapperScan("cn.itcast.order.mapper")
+@MapperScan(value = {"cn.itcast.order.mapper", "cn.itcast.feign"})
 @SpringBootApplication
 @EnableFeignClients(clients = UserClient.class, defaultConfiguration = DefaultFeignConfiguration.class)
 public class OrderApplication {
